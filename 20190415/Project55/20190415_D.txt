@@ -1,0 +1,17 @@
+drop table track;	
+drop table online_delivery;
+drop table online_sale;
+drop table replenish;
+drop table reorder;
+drop table warehouse;		
+drop table off_sale;
+drop table store;
+drop table ship_to_send
+drop table shipper;
+drop table frequent_customer;
+drop table infrequent_customer;
+drop table company;
+drop table buy;
+drop table product;
+drop table customer;
+drop table manufacturer;

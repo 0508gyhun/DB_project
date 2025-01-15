@@ -1,0 +1,4 @@
+﻿  Project55.cpp
+C:\Users\Gyu_Hyun\OneDrive\바탕 화면\디비2\제출\Project55\Project55\Project55.cpp(29,12): warning C4101: 'sql_row' :참조되지 않은 지역 변수입니다.
+C:\Users\Gyu_Hyun\OneDrive\바탕 화면\디비2\제출\Project55\Project55\Project55.cpp(28,13): warning C4101: 'sql_result' :참조되지 않은 지역 변수입니다.
+  Project55.vcxproj -> C:\Users\Gyu_Hyun\OneDrive\바탕 화면\디비2\제출\Project55\x64\Debug\Project55.exe

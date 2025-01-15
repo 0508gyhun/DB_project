@@ -1,0 +1,369 @@
+CREATE TABLE customer(	customer_id          VARCHAR(5)  NOT NULL   , 	cumulative_quantity             VARCHAR(5)  ,phone   varchar(15),  cumulative_dollar       VARCHAR(15)  ,     primary key (customer_id));
+
+CREATE TABLE product(	product_id          VARCHAR(8)  NOT NULL ,	                         price       VARCHAR(10)  ,                       ptype      VARCHAR(10)  ,   manufacturer        VARCHAR(10),    primary key (product_id));
+
+CREATE TABLE buy(	customer_id          VARCHAR(5)  NOT NULL , product_id          VARCHAR(8)  NOT NULL , buy_season      VARCHAR(3)  , buy_date   date ,   primary key (product_id, customer_id), foreign key (customer_id) references customer (customer_id) on delete cascade,  foreign key (product_id) references product (product_id)    on delete cascade);
+
+CREATE TABLE company(	company_id          VARCHAR(10)  NOT NULL ,   	  primary key (company_id));
+
+
+CREATE TABLE infrequent_customer(	card_num    VARCHAR(10)  NOT NULL,               customer_id          VARCHAR(5)  NOT NULL ,	  primary key (card_num) ,      foreign key (customer_id) references customer (customer_id)    on delete cascade);
+
+
+CREATE TABLE frequent_customer(	account_num    VARCHAR(12)  NOT NULL,               company_id          VARCHAR(10)  ,	customer_id    VARCHAR(5) ,     primary key (account_num) ,      foreign key (customer_id) references customer (customer_id)    on delete cascade ,      foreign key (company_id) references company (company_id)  on delete cascade);
+CREATE TABLE shipper(	shipper_name          VARCHAR(15)  NOT NULL ,     primary key (shipper_name));
+
+
+CREATE TABLE store(	store_id          VARCHAR(10)  NOT NULL ,   	store_region          VARCHAR(20),  primary key (store_id));
+
+CREATE TABLE off_sale(	product_id          VARCHAR(8)  NOT NULL ,   	store_id          VARCHAR(10),      quantity_product_store   varchar (5),   primary key (product_id, store_id),     foreign key (product_id) references product (product_id)    on delete cascade,       foreign key (store_id) references store (store_id)    on delete cascade);
+
+
+ CREATE TABLE manufacturer(	manufacturer_id          VARCHAR(13)  NOT NULL ,     primary key (manufacturer_id));
+
+
+ CREATE TABLE warehouse(	warehouse_id          VARCHAR(10)  NOT NULL ,company_id    VARCHAR(10),warehouse_region     VARCHAR(15),primary key (warehouse_id)  , foreign key (company_id) references company (company_id)    on delete cascade);
+
+CREATE TABLE reorder(	warehouse_id          VARCHAR(10)  NOT NULL ,   	manufacturer_id          VARCHAR(13),     primary key (warehouse_id, manufacturer_id),     foreign key (warehouse_id) references warehouse (warehouse_id)    on delete cascade,       foreign key (manufacturer_id) references manufacturer (manufacturer_id)    on delete cascade);
+
+CREATE TABLE replenish(	store_id          VARCHAR(10)  NOT NULL ,   	warehouse_id          VARCHAR(10),         primary key (store_id, warehouse_id),     foreign key (store_id) references store (store_id)    on delete cascade,       foreign key (warehouse_id) references warehouse (warehouse_id)    on delete cascade);
+
+CREATE TABLE online_sale(	product_id          VARCHAR(8)  NOT NULL ,   	warehouse_id          VARCHAR(10) NOT NULL,     quantity_product_warehouse    VARCHAR(5),    primary key (product_id, warehouse_id),     foreign key (product_id) references product (product_id)    on delete cascade,       foreign key (warehouse_id) references warehouse (warehouse_id)    on delete cascade);
+
+CREATE TABLE online_delivery(	shipper_name          VARCHAR(15)  NOT NULL ,   	warehouse_id          VARCHAR(10),         primary key (shipper_name, warehouse_id),     foreign key (shipper_name) references shipper (shipper_name)    on delete cascade,       foreign key (warehouse_id) references warehouse (warehouse_id)    on delete cascade);
+
+CREATE TABLE track(	product_id          VARCHAR(8)  NOT NULL ,   	shipper_name          VARCHAR(15),   destroyed_or_not     varchar(1),  trackingnum     varchar (8),    predict_date  date,      primary key (product_id, shipper_name),     foreign key (product_id) references product (product_id)    on delete cascade,       foreign key (shipper_name) references shipper (shipper_name)    on delete cascade);
+
+CREATE TABLE ship_to_send (customer_id     VARCHAR(5)    NOT NULL,   shipper_name       VARCHAR(15)    NOT NULL, trackingnum   varchar(8)   , primary key(customer_id, shipper_name),            foreign key (shipper_name) references shipper (shipper_name)    on delete cascade,     foreign key (customer_id) references customer (customer_id)    on delete cascade);
+
+
+insert into customer values ( '0001','10','010-8498-9877','150000');
+insert into customer values ( '0002','5','010-5718-8088','10000');
+insert into customer values ( '0003','3','010-5541-1477','7000');
+insert into customer values ( '0004','1','010-2521-0222','1000');
+insert into customer values ( '0005','7','010-0233-8088','250000');
+insert into customer values ( '0006','9','010-2124-4447','350000');
+insert into customer values ( '0007','17','010-2126-8482','650000');
+insert into customer values ( '0008','20','010-2321-2927','850000');
+insert into customer values ( '0009','10','010-2414-1415','450000');
+insert into customer values ( '0010','3','010-2526-2325','150000');
+insert into customer values ( '0011','1','010-8485-8988','10000');
+insert into customer values ( '0012','2','010-5255-2326','190000');
+insert into customer values ( '0013','8','010-2326-9877','230000');
+insert into customer values ( '0014','10','010-2964-0111','200000');
+insert into customer values ( '0015','11','010-0256-3699','190000');
+insert into customer values ( '0016','16','010-2145-8963','660000');
+insert into customer values ( '0017','5','010-8564-1452','45000');
+insert into customer values ( '0018','3','010-2221-3333','10000');
+insert into customer values ( '0019','3','010-1222-3222','9000');
+insert into customer values ( '0020','22','010-1000-1222','660000');
+insert into customer values ( '0021','32','010-2555-9877','1800000');
+insert into customer values ( '0022','5','010-2152-0003','10000');
+insert into customer values ( '0023','8','010-5898-9877','30000');
+insert into customer values ( '0024','7','010-5652-1154','31000');
+insert into customer values ( '0025','7','010-4546-9877','50000');
+insert into customer values ( '0026','16','010-4745-2510','670000');
+insert into customer values ( '0027','10','010-2122-0008','310000');
+insert into customer values ( '0028','6','010-8989-9091','10000');
+insert into customer values ( '0029','9','010-9777-9877','360000');
+insert into customer values ( '0030','1','010-6333-9333','4000');
+
+
+
+
+
+
+insert into product values ( 'PD01', '2000','A','SONY');
+insert into product values ( 'PD02', '5000','A','SONY');
+insert into product values ( 'PD03', '3000','B','SONY');
+insert into product values ( 'PD04', '3000','D','APPLE');
+insert into product values ( 'PD05', '5000','A','APPLE');
+insert into product values ( 'PD06', '7000','E','NASDAK');
+insert into product values ( 'PD07', '10000','C','NASDAK');
+insert into product values ( 'PD08', '15000','C','MICRO');
+insert into product values ( 'PD09', '100000','A','APPLE');
+insert into product values ( 'PD10', '18000','D','MICRO');
+insert into product values ( 'PD11', '20000','D','SONY');
+insert into product values ( 'PD12', '40000','A','SAMSUNG');
+insert into product values ( 'PD13', '2000','B','SAMSUNG');
+insert into product values ( 'PD14', '40000','D','LG');
+insert into product values ( 'PD15', '50000','B','LG');
+
+insert into company values ( 'CPN1');
+insert into company values ( 'CPN2');
+insert into company values ( 'CPN3');
+insert into company values ( 'CPN4');
+insert into company values ( 'CPN5');
+insert into company values ( 'CPN6');
+insert into company values ( 'CPN7');
+insert into company values ( 'CPN8');
+insert into company values ( 'CPN9');
+insert into company values ( 'CPN10');
+insert into company values ( 'CPN11');
+insert into company values ( 'CPN12');
+insert into company values ( 'CPN13');
+insert into company values ( 'CPN14');
+insert into company values ( 'CPN15');
+
+insert into store values ('ST01','CALI');
+insert into store values ('ST02','NY');
+insert into store values ('ST03','CALI');
+insert into store values ('ST04','LA');
+insert into store values ('ST05','TEX');
+insert into store values ('ST06','TEX');
+insert into store values ('ST07','BOST');
+insert into store values ('ST08','BOST');
+insert into store values ('ST09','NY');
+insert into store values ('ST10','LA');
+insert into store values ('ST11','DC');
+insert into store values ('ST12','CALI');
+insert into store values ('ST13','HAW');
+insert into store values ('ST14','DC');
+insert into store values ('ST15','CALI');
+insert into store values ('ST16','HAW');
+
+
+insert into warehouse values ('WH01','CPN1','HAW');
+insert into warehouse values ('WH02','CPN1','LA');
+insert into warehouse values ('WH03','CPN3','NY');
+insert into warehouse values ('WH04','CPN8','NY');
+insert into warehouse values ('WH05','CPN10','LA');
+insert into warehouse values ('WH06','CPN15','CALI');
+insert into warehouse values ('WH07','CPN12','CALI');
+insert into warehouse values ('WH08','CPN2','TEX');
+insert into warehouse values ('WH09','CPN1','CALI');
+insert into warehouse values ('WH10','CPN5','CALI');
+insert into warehouse values ('WH11','CPN11','LA');
+insert into warehouse values ('WH12','CPN10','NY');
+insert into warehouse values ('WH13','CPN4','DC');
+insert into warehouse values ('WH14','CPN3','BOST');
+insert into warehouse values  ('WH15','CPN14','DC');
+
+
+
+
+
+insert into shipper values ('USPS');
+insert into shipper values ('DAE');
+insert into shipper values ('HAN');
+insert into shipper values ('TONG');
+insert into shipper values ('WOON');
+insert into shipper values ('WOO');
+insert into shipper values ('CHAE');
+insert into shipper values ('GOOK');
+insert into shipper values ('LOTTE');
+insert into shipper values ('GS');
+insert into shipper values ('HANJIN');
+insert into shipper values ('COOL');
+insert into shipper values ('CONV');
+
+
+
+
+insert into infrequent_customer values ('01-015-1','0001');
+insert into infrequent_customer values ('01-015-2','0002');
+insert into infrequent_customer values ('01-015-3','0003');
+insert into infrequent_customer values ('01-015-4','0004');
+insert into infrequent_customer values ('01-015-5','0005');
+insert into infrequent_customer values ('01-015-6','0006');
+insert into infrequent_customer values ('01-015-7','0007');
+insert into infrequent_customer values ('01-015-8','0008');
+insert into infrequent_customer values ('01-015-9','0009');
+insert into infrequent_customer values ('01-015-10','0010');
+insert into infrequent_customer values ('01-015-11','0011');
+insert into infrequent_customer values ('01-015-12','0012');
+insert into infrequent_customer values ('01-015-13','0013');
+insert into infrequent_customer values ('01-015-14','0014');
+insert into infrequent_customer values ('01-015-15','0015');
+
+
+
+
+insert into frequent_customer values ('02-015-1','CPN1','0016');
+insert into frequent_customer values ('02-015-2','CPN1','0017');
+insert into frequent_customer values ('02-015-3','CPN10','0018');
+insert into frequent_customer values ('02-015-4','CPN11','0019');
+insert into frequent_customer values ('02-015-5','CPN5','0020');
+insert into frequent_customer values ('02-015-6','CPN4','0021');
+insert into frequent_customer values ('02-015-7','CPN5','0022');
+insert into frequent_customer values ('02-015-8','CPN2','0023');
+insert into frequent_customer values ('02-015-9','CPN3','0024');
+insert into frequent_customer values ('02-015-10','CPN3','0025');
+insert into frequent_customer values ('02-015-11','CPN8','0026');
+insert into frequent_customer values ('02-015-12','CPN8','0027');
+insert into frequent_customer values ('02-015-13','CPN13','0028');
+insert into frequent_customer values ('02-015-14','CPN13','0029');
+insert into frequent_customer values ('02-015-15','CPN2','0030');
+
+insert into manufacturer values ('MF01');
+insert into manufacturer values ('MF02');
+insert into manufacturer values ('MF03');
+insert into manufacturer values ('MF04');
+insert into manufacturer values ('MF05');
+insert into manufacturer values ('MF06');
+insert into manufacturer values ('MF07');
+insert into manufacturer values ('MF08');
+insert into manufacturer values ('MF09');
+insert into manufacturer values ('MF10');
+insert into manufacturer values ('MF11');
+insert into manufacturer values ('MF12');
+insert into manufacturer values ('MF13');
+insert into manufacturer values ('MF14');
+insert into manufacturer values ('MF15');
+
+
+insert into reorder values('WH01','MF02');
+insert into reorder values('WH01','MF03');
+insert into reorder values('WH02','MF01');
+insert into reorder values('WH02','MF06');
+insert into reorder values('WH03','MF05');
+insert into reorder values('WH04','MF04');
+insert into reorder values('WH05','MF04');
+insert into reorder values('WH06','MF04');
+insert into reorder values('WH06','MF01');
+insert into reorder values('WH07','MF10');
+insert into reorder values('WH10','MF11');
+insert into reorder values('WH10','MF12');
+insert into reorder values('WH11','MF12');
+insert into reorder values('WH11','MF13');
+insert into reorder values('WH15','MF15');
+insert into reorder values('WH15','MF01');
+insert into reorder values('WH12','MF02');
+
+insert into replenish values('ST01','WH01');
+insert into replenish values('ST02','WH02');
+insert into replenish values('ST02','WH01');
+insert into replenish values('ST01','WH06');
+insert into replenish values('ST03','WH04');
+insert into replenish values('ST04','WH08');
+insert into replenish values('ST05','WH10');
+insert into replenish values('ST05','WH13');
+insert into replenish values('ST10','WH10');
+insert into replenish values('ST11','WH05');
+insert into replenish values('ST12','WH05');
+insert into replenish values('ST12','WH14');
+insert into replenish values('ST08','WH10');
+insert into replenish values('ST06','WH13');
+insert into replenish values('ST07','WH10');
+
+insert into off_sale values('PD01','ST01','20');
+insert into off_sale values('PD01','ST02','10');
+insert into off_sale values('PD03','ST03','14');
+insert into off_sale values('PD04','ST01','0');
+insert into off_sale values('PD04','ST02','7');
+insert into off_sale values('PD02','ST10','0');
+insert into off_sale values('PD05','ST12','0');
+insert into off_sale values('PD08','ST08','27');
+insert into off_sale values('PD10','ST09','200');
+insert into off_sale values('PD02','ST14','32');
+insert into off_sale values('PD08','ST04','0');
+insert into off_sale values('PD09','ST03','2');
+insert into off_sale values('PD11','ST09','7');
+insert into off_sale values('PD11','ST01','50');
+insert into off_sale values('PD15','ST02','80');
+insert into off_sale values('PD14','ST14','2');
+insert into off_sale values('PD10','ST05','1');
+
+
+
+
+insert into online_sale values('PD10','WH08','1');
+insert into online_sale values('PD01','WH02','10');
+insert into online_sale values('PD02','WH04','100');
+insert into online_sale values('PD04','WH07','15');
+insert into online_sale values('PD11','WH08','20');
+insert into online_sale values('PD10','WH01','22');
+insert into online_sale values('PD14','WH03','28');
+insert into online_sale values('PD07','WH10','30');
+insert into online_sale values('PD03','WH09','0');
+insert into online_sale values('PD03','WH06','0');
+insert into online_sale values('PD09','WH14','0');
+insert into online_sale values('PD09','WH13','81');
+insert into online_sale values('PD08','WH13','11');
+insert into online_sale values('PD13','WH12','100');
+insert into online_sale values('PD12','WH08','0');
+
+
+
+insert into online_delivery values('USPS','WH01');
+insert into online_delivery values('TONG','WH10');
+insert into online_delivery values('WOO','WH08');
+insert into online_delivery values('USPS','WH04');
+insert into online_delivery values('USPS','WH09');
+insert into online_delivery values('CHAE','WH09');
+insert into online_delivery values('USPS','WH06');
+insert into online_delivery values('CHAE','WH03');
+insert into online_delivery values('GOOK','WH03');
+insert into online_delivery values('GOOK','WH11');
+insert into online_delivery values('USPS','WH15');
+insert into online_delivery values('LOTTE','WH12');
+insert into online_delivery values('CHAE','WH10');
+insert into online_delivery values('COOL','WH14');
+insert into online_delivery values('CONV','WH15');
+
+
+insert into buy values ('0001','PD01','SUM','2022-06-01');
+insert into buy values ('0002','PD02','SPR','2021-04-03');
+insert into buy values ('0003','PD02','SUM','2021-08-13');
+insert into buy values ('0004','PD01','FAL','2021-10-03');
+insert into buy values ('0005','PD05','WIN','2020-12-06');
+insert into buy values ('0006','PD07','SUM','2022-05-03');
+insert into buy values ('0007','PD08','SUM','2019-05-05');
+insert into buy values ('0008','PD05','FAL','2021-08-23');
+insert into buy values ('0009','PD03','SPR','2022-02-03');
+insert into buy values ('0010','PD10','SUM','2020-04-13');
+insert into buy values ('0011','PD07','SPR','2022-05-14');
+insert into buy values ('0012','PD04','SPR','2022-05-13');
+insert into buy values ('0013','PD09','SUM','2020-06-13');
+insert into buy values ('0014','PD11','WIN','2020-12-12');
+insert into buy values ('0015','PD07','WIN','2021-11-21');
+
+
+
+insert into track values ('PD01','USPS','N','T0001','2021-02-01');
+insert into track values ('PD02','USPS','Y','T0016','2020-08-01');
+insert into track values ('PD02','DAE','N','T0002','2022-02-01');
+insert into track values ('PD01','HAN','N','T0003','2020-06-10');
+insert into track values ('PD05','WOON','Y','T0004','2021-04-15');
+insert into track values ('PD04','USPS','N','T0005','2021-04-01');
+insert into track values ('PD04','CHAE','Y','T0006','2022-02-01');
+insert into track values ('PD03','HAN','Y','T0007','2022-04-01');
+insert into track values ('PD03','USPS','N','T0008','2021-10-01');
+insert into track values ('PD10','WOO','Y','T0009','2021-01-01');
+insert into track values ('PD10','GS','N','T0010','2020-08-01');
+insert into track values ('PD15','HAN','N','T0011','2022-02-01');
+insert into track values ('PD12','USPS','Y','T0012','2020-08-11');
+insert into track values ('PD08','CHAE','Y','T0013','2020-01-07');
+insert into track values ('PD09','COOL','N','T0014','2021-07-07');
+insert into track values ('PD06','GS','N','T0015','2020-12-01');
+
+
+
+insert into ship_to_send values ('0001','USPS','T0001' );
+insert into ship_to_send values ('0002','USPS','T0006' );
+insert into ship_to_send values ('0003','HAN','T0008' );
+insert into ship_to_send values ('0002','GS','T0004' );
+insert into ship_to_send values ('0005','USPS','T0002' );
+insert into ship_to_send values ('0004','HAN','T0003' );
+insert into ship_to_send values ('0004','WOO','T0005' );
+insert into ship_to_send values ('0003','CONV','T0007' );
+insert into ship_to_send values ('0005','GOOK','T0010' );
+insert into ship_to_send values ('0008','COOL','T0009' );
+insert into ship_to_send values ('0010','CHAE','T0015' );
+insert into ship_to_send values ('0010','HANJIN','T0014' );
+insert into ship_to_send values ('0015','USPS','T0011' );
+insert into ship_to_send values ('0012','DAE','T0012' );
+insert into ship_to_send values ('0001','WOO','T0015' );
+
+
+
+
+
+
+
+
+
+
+
+
+
